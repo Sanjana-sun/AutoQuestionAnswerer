@@ -1,0 +1,1 @@
+console.log("Auto Question Answerer: Scanning for text...");
