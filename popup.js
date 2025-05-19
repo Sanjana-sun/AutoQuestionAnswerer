@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("Popup loaded");
+  document.addEventListener('DOMContentLoaded', () => {
        const toggleButton = document.getElementById('toggleButton');
        let isScanning = false;
 
@@ -13,3 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
          chrome.runtime.sendMessage({ action: 'setScanningState', isScanning });
        });
      });
+  // ... rest of the code
+});
+
+
+     
