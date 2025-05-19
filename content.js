@@ -1,4 +1,7 @@
-// Scans the webpage for questions periodically and displays mock answers
+// Scans the webpage for questions when enabled
+     let isScanning = false;
+     let scanInterval = null;
+
      function scanForQuestions() {
        const walker = document.createTreeWalker(
          document.body,
@@ -17,12 +20,10 @@
      }
 
      function generateAnswer(question) {
-       // Mock answer generation (replace with API call later)
        return `Answer to "${question}": This is a placeholder response.`;
      }
 
      function displayAnswer(question, answer) {
-       // Create a floating div to display the answer
        const div = document.createElement('div');
        div.style.position = 'fixed';
        div.style.top = '10px';
@@ -35,7 +36,6 @@
        div.style.fontSize = '14px';
        div.textContent = `${question}\n${answer}`;
        document.body.appendChild(div);
-       // Remove the div after 5 seconds
        setTimeout(() => div.remove(), 5000);
      }
 
@@ -54,6 +54,18 @@
        }
      }
 
-     // Run the scan immediately and then every 5 seconds
-     scanAndDisplay();
-     setInterval(scanAndDisplay, 5000);
+     // Listen for messages to toggle scanning
+     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+       if (request.action === 'toggleScanning') {
+         isScanning = request.isScanning;
+         if (isScanning && !scanInterval) {
+           scanAndDisplay();
+           scanInterval = setInterval(scanAndDisplay, 5000);
+           console.log("Auto Question Answerer: Scanning started.");
+         } else if (!isScanning && scanInterval) {
+           clearInterval(scanInterval);
+           scanInterval = null;
+           console.log("Auto Question Answerer: Scanning stopped.");
+         }
+       }
+     });
