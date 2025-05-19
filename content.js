@@ -1,5 +1,4 @@
-// Scans the webpage for questions when enabled
-     let isScanning = false;
+let isScanning = false;
      let scanInterval = null;
 
      function scanForQuestions() {
@@ -40,28 +39,32 @@
      }
 
      function scanAndDisplay() {
-       console.log("Auto Question Answerer: Starting scan...");
+       console.log("Content: Starting scan...");
        const questions = scanForQuestions();
        if (questions.length > 0) {
-         console.log("Found questions:", questions);
+         console.log("Content: Found questions:", questions);
          questions.forEach(question => {
            const answer = generateAnswer(question);
-           console.log("Generated answer:", answer);
+           console.log("Content: Generated answer:", answer);
            displayAnswer(question, answer);
          });
        } else {
-         console.log("No questions found on the page.");
+         console.log("Content: No questions found on the page.");
        }
      }
 
      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+       console.log("Content: Received message", request);
        if (request.action === 'toggleScanning') {
          isScanning = request.isScanning;
+         console.log("Content: isScanning set to", isScanning);
          if (isScanning && !scanInterval) {
+           console.log("Content: Starting scan interval");
            scanAndDisplay();
            scanInterval = setInterval(scanAndDisplay, 5000);
            console.log("Auto Question Answerer: Scanning started.");
          } else if (!isScanning && scanInterval) {
+           console.log("Content: Stopping scan interval");
            clearInterval(scanInterval);
            scanInterval = null;
            console.log("Auto Question Answerer: Scanning stopped.");
