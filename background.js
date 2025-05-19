@@ -1,5 +1,4 @@
-// Background script to manage scanning state
-     let isScanning = false;
+let isScanning = false;
 
      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
        if (request.action === 'getScanningState') {
@@ -14,4 +13,3 @@
          sendResponse({ success: true });
        }
      });
-     

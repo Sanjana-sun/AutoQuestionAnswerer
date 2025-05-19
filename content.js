@@ -54,7 +54,6 @@
        }
      }
 
-     // Listen for messages to toggle scanning
      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
        if (request.action === 'toggleScanning') {
          isScanning = request.isScanning;
