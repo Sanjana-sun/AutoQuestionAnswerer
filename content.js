@@ -1,4 +1,4 @@
-// Scans the webpage for questions and displays mock answers
+// Scans the webpage for questions periodically and displays mock answers
      function scanForQuestions() {
        const walker = document.createTreeWalker(
          document.body,
@@ -39,15 +39,21 @@
        setTimeout(() => div.remove(), 5000);
      }
 
-     console.log("Auto Question Answerer: Starting scan...");
-     const questions = scanForQuestions();
-     if (questions.length > 0) {
-       console.log("Found questions:", questions);
-       questions.forEach(question => {
-         const answer = generateAnswer(question);
-         console.log("Generated answer:", answer);
-         displayAnswer(question, answer);
-       });
-     } else {
-       console.log("No questions found on the page.");
+     function scanAndDisplay() {
+       console.log("Auto Question Answerer: Starting scan...");
+       const questions = scanForQuestions();
+       if (questions.length > 0) {
+         console.log("Found questions:", questions);
+         questions.forEach(question => {
+           const answer = generateAnswer(question);
+           console.log("Generated answer:", answer);
+           displayAnswer(question, answer);
+         });
+       } else {
+         console.log("No questions found on the page.");
+       }
      }
+
+     // Run the scan immediately and then every 5 seconds
+     scanAndDisplay();
+     setInterval(scanAndDisplay, 5000);
