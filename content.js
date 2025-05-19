@@ -1,4 +1,4 @@
-// Scans the webpage for questions and logs them to the console
+// Scans the webpage for questions and displays mock answers
      function scanForQuestions() {
        const walker = document.createTreeWalker(
          document.body,
@@ -16,10 +16,38 @@
        return questions;
      }
 
+     function generateAnswer(question) {
+       // Mock answer generation (replace with API call later)
+       return `Answer to "${question}": This is a placeholder response.`;
+     }
+
+     function displayAnswer(question, answer) {
+       // Create a floating div to display the answer
+       const div = document.createElement('div');
+       div.style.position = 'fixed';
+       div.style.top = '10px';
+       div.style.right = '10px';
+       div.style.backgroundColor = 'white';
+       div.style.border = '1px solid black';
+       div.style.padding = '10px';
+       div.style.zIndex = '10000';
+       div.style.maxWidth = '300px';
+       div.style.fontSize = '14px';
+       div.textContent = `${question}\n${answer}`;
+       document.body.appendChild(div);
+       // Remove the div after 5 seconds
+       setTimeout(() => div.remove(), 5000);
+     }
+
      console.log("Auto Question Answerer: Starting scan...");
      const questions = scanForQuestions();
      if (questions.length > 0) {
        console.log("Found questions:", questions);
+       questions.forEach(question => {
+         const answer = generateAnswer(question);
+         console.log("Generated answer:", answer);
+         displayAnswer(question, answer);
+       });
      } else {
        console.log("No questions found on the page.");
      }
